@@ -1,0 +1,16 @@
+{
+  "name": "securecart-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "test": "react-scripts test --env=jsdom",
+    "build": "react-scripts build",
+    "lint": "echo \"No linter configured\" && exit 0"
+  }
+}
