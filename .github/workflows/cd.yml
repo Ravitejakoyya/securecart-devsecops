@@ -1,0 +1,25 @@
+name: CD - Deploy SecureCart to Kubernetes
+
+on:
+  push:
+    branches: [Fix]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Kubeconfig
+        env:
+          KUBECONFIG_DATA: ${{ secrets.KUBECONFIG }}
+        run: |
+          echo "$KUBECONFIG_DATA" > $HOME/.kube/config
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+
+      - name: Helm upgrade/install SecureCart
+        run: |
+          helm upgrade --install securecart ./helm/securecart --namespace default --wait

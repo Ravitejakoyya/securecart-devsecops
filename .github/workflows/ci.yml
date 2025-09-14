@@ -1,0 +1,113 @@
+name: CI - Build & Test All Services and Frontend #(build, test, lint)
+
+on:
+  push:
+    branches: [Fix]
+  pull_request:
+
+jobs:
+  user-service:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Install user service dependencies
+        run: pip install -r services/user/requirements.txt
+
+      - name: Lint user service
+        run: |
+          pip install flake8
+          flake8 services/user
+
+      - name: Test user service
+        run: pytest services/user/tests
+
+  product-service:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Install product service dependencies
+        run: pip install -r services/product/requirements.txt
+
+      - name: Lint product service
+        run: |
+          pip install flake8
+          flake8 services/product
+
+      - name: Test product service
+        run: pytest services/product/tests
+
+  cart-service:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Install cart service dependencies
+        run: pip install -r services/cart/requirements.txt
+
+      - name: Lint cart service
+        run: |
+          pip install flake8
+          flake8 services/cart
+
+      - name: Test cart service
+        run: pytest services/cart/tests
+
+  order-service:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Install order service dependencies
+        run: pip install -r services/order/requirements.txt
+
+      - name: Lint order service
+        run: |
+          pip install flake8
+          flake8 services/order
+
+      - name: Test order service
+        run: pytest services/order/tests
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install frontend dependencies
+        run: npm install
+        working-directory: frontend
+
+      - name: Lint frontend
+        run: npm run lint
+        working-directory: frontend
+
+      - name: Test frontend
+        run: npm test -- --watchAll=false
+        working-directory: frontend
