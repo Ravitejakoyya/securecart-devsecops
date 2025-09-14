@@ -1,4 +1,4 @@
-name: CI - Build & Test All Services and Frontend
+name: CI - Build & Test All Services and Frontend #(build, test, lint)
 
 on:
   push:
@@ -8,7 +8,6 @@ on:
 jobs:
   user-service:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' || contains(github.event.head_commit.message, 'user') || startsWith(github.ref, 'refs/heads/main')
     steps:
       - uses: actions/checkout@v3
 

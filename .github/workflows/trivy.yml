@@ -1,0 +1,32 @@
+name: Trivy Vulnerability Scan
+
+on:
+  push:
+    branches: [Fix]
+
+jobs:
+  trivy-scan:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [user, product, cart, order, frontend]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Docker Image
+        run: |
+          docker build -t securecart-${{ matrix.service }} ./services/${{ matrix.service }} || \
+          docker build -t securecart-frontend ./frontend
+        if: matrix.service != 'frontend'
+
+      - name: Build frontend Docker Image
+        run: docker build -t securecart-frontend ./frontend
+        if: matrix.service == 'frontend'
+
+      - name: Scan Docker Image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: securecart-${{ matrix.service }}
+          format: table
+          exit-code: 1

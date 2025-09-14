@@ -1,0 +1,28 @@
+name: Checkov IaC Security Scan
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  terraform-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run Checkov on Terraform
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: terraform/
+
+  k8s-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run Checkov on Kubernetes Manifests
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: k8s/
